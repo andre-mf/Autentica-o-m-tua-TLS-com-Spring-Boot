@@ -58,6 +58,43 @@ Para testar a conexão MTLS, você pode usar o curl ou configurar outro cliente 
 curl -v --cert client-keystore.jks --key client-keystore.jks --pass password https://localhost:8443  
 ```
 
+Caso não seja possível a utilização do keustore JKS (Java KeyStore), é possível convertê-lo para PEM.
+
+##### Passo 1: Exportar o Certificado do Cliente e a Chave Privada do Keystore JKS
+
+Primeiro, exporte o certificado do cliente e a chave privada do keystore JKS para um arquivo P12 (PKCS12):
+
+```bash
+keytool -importkeystore -srckeystore client-keystore.jks -destkeystore client-keystore.p12 -deststoretype PKCS12 -srcalias client
+```
+
+##### Passo 2: Converter o Arquivo P12 para PEM
+Use o openssl para converter o arquivo P12 para dois arquivos PEM: um para a chave privada e outro para o certificado.
+
+```bash
+openssl pkcs12 -in client-keystore.p12 -nocerts -out client-key.pem -nodes
+```
+
+##### Exportar o Certificado
+
+```bash
+openssl pkcs12 -in client-keystore.p12 -clcerts -nokeys -out client-cert.pem
+```
+
+##### Passo 3: Usar o curl com os Arquivos PEM
+Agora, você pode usar o curl com os arquivos PEM gerados:
+
+
+```bash
+curl -v -k --key client-key.pem --cert client-cert.pem https://localhost:8443
+```
+
+##### Exportar a Chave Privada
+
+```bash
+keytool -importkeystore -srckeystore client-keystore.jks -destkeystore client-keystore.p12 -deststoretype PKCS12 -srcalias client
+```
+
 ## Passo 5: Configurar Segurança no Spring Boot
 
 Se estiver usando Spring Security, certifique-se de configurar a segurança corretamente:
@@ -82,6 +119,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 }
 ```
+
+
 
 Para verificar se a configuração está funcionando corretamente, você pode iniciar a aplicação e tentar acessar os  endpoints com e sem o certificado de cliente. Apenas clientes com o certificado correto devem conseguir acessar os  endpoints seguros.
 
