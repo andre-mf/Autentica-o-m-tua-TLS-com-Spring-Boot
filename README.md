@@ -36,10 +36,10 @@ Adicione as seguintes configurações no application.properties ou application.y
 
 ```properties
  server.port=8443
- server.ssl.key-store=classpath:server-keystore.jks
+ server.ssl.key-store=classpath:keystore/server-keystore.jks
  server.ssl.key-store-password=password
  server.ssl.key-password=password
- server.ssl.trust-store=classpath:server-truststore.jks
+ server.ssl.trust-store=classpath:keystore/server-truststore.jks
  server.ssl.trust-store-password=password
  server.ssl.client-auth=need
 ```
