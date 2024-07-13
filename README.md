@@ -58,7 +58,7 @@ Para testar a conexão MTLS, você pode usar o curl ou configurar outro cliente 
 curl -v --cert client-keystore.jks --key client-keystore.jks --pass password https://localhost:8443  
 ```
 
-Caso não seja possível a utilização do keustore JKS (Java KeyStore), é possível convertê-lo para PEM.
+Caso não seja possível a utilização do keystore JKS (Java KeyStore), é possível convertê-lo para PEM.
 
 ##### Passo 1: Exportar o Certificado do Cliente e a Chave Privada do Keystore JKS
 
